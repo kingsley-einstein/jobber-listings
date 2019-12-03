@@ -38,13 +38,17 @@ public class Job implements java.io.Serializable {
 
   public Job() {}
 
-  public Job(UUID id, String title, String description, JobType type, UUID createdBy, String link) {
-    this.id = id;
+  public Job(String title, String description, JobType type, UUID createdBy, String link) {
     this.title = title;
     this.description = description;
     this.type = type;
     this.createdBy = createdBy;
     this.link = link;
+  }
+
+  public Job(UUID id, String title, String description, JobType type, UUID createdBy, String link) {
+    this(title, description, type, createdBy, link);
+    this.id = id;
   }
 
   public UUID getId() {
