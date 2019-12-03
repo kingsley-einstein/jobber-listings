@@ -1,0 +1,9 @@
+
+server:
+  port: ${PORT}
+spring:
+  application:
+    name: jobs-service
+  cloud:
+    config:
+      uri: ${CLOUD_URI}
