@@ -1,10 +1,10 @@
 package com.jobs.board.listings.errors;
 
 @SuppressWarnings("serial")
-public class NotFoundException extends RuntimeException {
+public class ErrorResponse extends RuntimeException {
   private Integer code;
 
-  public NotFoundException(String message, Integer code) {
+  public ErrorResponse(String message, Integer code) {
     super(message);
     this.code = code;
   }
