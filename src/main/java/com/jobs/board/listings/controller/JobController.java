@@ -9,6 +9,7 @@ import com.jobs.board.listings.errors.ErrorResponse;
 import com.jobs.board.listings.model.Job;
 import com.jobs.board.listings.repository.JobRepository;
 import com.jobs.board.listings.response.Response;
+import com.jobs.board.listings.types.JobType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,5 +61,27 @@ public class JobController {
     Auth auth = authResponse.getBody();
     Response<Long> countOfJobs = new Response<>(200, repository.countByCreatedBy(auth.getId()));
     return new ResponseEntity<>(countOfJobs, HttpStatus.OK);
+  }
+
+  @GetMapping("/getAllListings/{page}")
+  public ResponseEntity<Response<List<Job>>> getAllListings(@PathVariable("page") Integer page) {
+    Page<Job> pagedJob = repository.findAll(PageRequest.of(page, 20));
+    Response<List<Job>> listOfJobs = new Response<>(200, pagedJob.getContent());
+    return new ResponseEntity<>(listOfJobs, HttpStatus.OK);
+  }
+
+  @GetMapping("/countAllListings")
+  public ResponseEntity<Response<Long>> countAllListings() {
+    Response<Long> countOfJobs = new Response<>(200, repository.count());
+    return new ResponseEntity<>(countOfJobs, HttpStatus.OK);
+  }
+
+  @GetMapping("/getListingsByType/{type}")
+  public ResponseEntity<Response<List<Job>>> getAllListingsByType(@PathVariable("type") String type) {
+    Page<Job> pagedJob = repository.findByType(JobType.valueOf(type)).orElseThrow(() -> {
+      return new ErrorResponse("Not Found", 404);
+    });
+    Response<List<Job>> listOfJobs = new Response<>(200, pagedJob.getContent());
+    return new ResponseEntity<>(listOfJobs, HttpStatus.OK);
   }
 }
