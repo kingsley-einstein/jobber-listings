@@ -90,4 +90,19 @@ public class Job implements java.io.Serializable {
   public String getLink() {
     return link;
   }
+
+  public void setJob(Job job) {
+    if (job.getTitle() != null) {
+      this.setTitle(job.getTitle());
+    }
+    if (job.getDescription() != null) {
+      this.setDescription(job.getDescription());
+    }
+    if (job.getType() != null) {
+      this.setType(job.getType());
+    }
+    if (job.getLink() != null) {
+      this.setLink(job.getLink());
+    }
+  }
 }

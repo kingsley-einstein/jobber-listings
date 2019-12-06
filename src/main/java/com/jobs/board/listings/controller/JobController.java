@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,5 +84,18 @@ public class JobController {
     });
     Response<List<Job>> listOfJobs = new Response<>(200, pagedJob.getContent());
     return new ResponseEntity<>(listOfJobs, HttpStatus.OK);
+  }
+
+  @PatchMapping("/updateListing/{id}")
+  public ResponseEntity<Response<Job>> updateListing(@PathVariable("id") UUID id, @RequestBody Job body, @RequestHeader("Authorization") String authorization) {
+    Response<Auth> authResponse = response.getLoggedUser(authorization);
+    Auth auth = authResponse.getBody();
+    Job job = repository.findByCreatedByAndId(auth.getId(), id).orElseThrow(() -> {
+      return new ErrorResponse("Not Found", 404);
+    });
+    job.setJob(body);
+    Job saved = repository.save(job);
+    Response<Job> updatedJob = new Response<>(200, saved);
+    return new ResponseEntity<>(updatedJob, HttpStatus.OK);
   }
 }
