@@ -49,5 +49,4 @@ public class CustomErrorDecoder implements ErrorDecoder {
         return new ErrorResponse("Server error", 500);
     }
   }
-
 }

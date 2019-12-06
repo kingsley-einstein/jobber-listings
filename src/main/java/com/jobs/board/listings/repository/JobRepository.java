@@ -13,6 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface JobRepository extends JpaRepository<Job, UUID> {
   public Optional<Page<Job>> findByCreatedBy(UUID createdBy, Pageable pageable);
   public Long countByCreatedBy(UUID createdBy);
-  public Optional<Page<Job>> findByType(JobType type);
+  public Optional<Page<Job>> findByType(JobType type, Pageable pageable);
   public Optional<Job> findByCreatedByAndId(UUID createdBy, UUID id);
 }

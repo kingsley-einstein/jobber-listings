@@ -34,6 +34,12 @@ public class JobController {
   @Autowired
   private AuthResponse response;
 
+  @GetMapping
+  public ResponseEntity<Response<String>> checkIfUp() {
+    Response<String> message = new Response<>(200, "Welcome to the jobs API");
+    return new ResponseEntity<>(message, HttpStatus.OK);
+  }
+
   @PostMapping("/create")
   public ResponseEntity<Response<Job>> createJob(@RequestHeader(value = "Authorization") String authorization, @RequestBody Job body) {
     Response<Auth> authResponse = response.getLoggedUser(authorization);
@@ -77,11 +83,12 @@ public class JobController {
     return new ResponseEntity<>(countOfJobs, HttpStatus.OK);
   }
 
-  @GetMapping("/getListingsByType/{type}")
-  public ResponseEntity<Response<List<Job>>> getAllListingsByType(@PathVariable("type") String type) {
-    Page<Job> pagedJob = repository.findByType(JobType.valueOf(type)).orElseThrow(() -> {
-      return new ErrorResponse("Not Found", 404);
-    });
+  @GetMapping("/getListingsByType/{type}/{page}")
+  public ResponseEntity<Response<List<Job>>> getAllListingsByType(@PathVariable("type") String type, @PathVariable("page") Integer page) {
+    Page<Job> pagedJob = repository.findByType(JobType.valueOf(type), PageRequest.of(page, 20))
+      .orElseThrow(() -> {
+        return new ErrorResponse("Not Found", 404);
+      });
     Response<List<Job>> listOfJobs = new Response<>(200, pagedJob.getContent());
     return new ResponseEntity<>(listOfJobs, HttpStatus.OK);
   }
