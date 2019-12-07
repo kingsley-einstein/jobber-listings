@@ -1,9 +1,0 @@
-
-server:
-  port: 8874
-spring:
-  application:
-    name: jobs-service
-  cloud:
-    config:
-      uri: http://localhost:----
