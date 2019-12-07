@@ -3,7 +3,7 @@ server:
   port: ${PORT}
 spring:
   application:
-    name: jobs-service
+    name: listings-service
   cloud:
     config:
       uri: ${CLOUD_URI}
