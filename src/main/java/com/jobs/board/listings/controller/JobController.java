@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -104,5 +105,23 @@ public class JobController {
     Job saved = repository.save(job);
     Response<Job> updatedJob = new Response<>(200, saved);
     return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/deleteListing/{id}")
+  public ResponseEntity<Response<String>> deleteListing(@PathVariable("id") UUID id, @RequestHeader(value = "Authorization") String authorization) {
+    Response<Auth> authResponse = response.getLoggedUser(authorization);
+    Auth auth = authResponse.getBody();
+    repository.deleteByIdAndCreatedBy(id, auth.getId());
+    Response<String> deletedMessage = new Response<>(200, "Item deleted successfully");
+    return new ResponseEntity<>(deletedMessage, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/deleteAllListingsByUser")
+  public ResponseEntity<Response<String>> deleteAllByUser(@RequestHeader(value = "Authorization") String authorization) {
+    Response<Auth> authResponse = response.getLoggedUser(authorization);
+    Auth auth = authResponse.getBody();
+    repository.deleteByCreatedBy(auth.getId());
+    Response<String> deletedMessage = new Response<>(200, "Items deleted");
+    return new ResponseEntity<>(deletedMessage, HttpStatus.OK);
   }
 }

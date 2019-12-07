@@ -17,7 +17,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
           ObjectMapper mapper = new ObjectMapper();
           com.jobs.board.listings.response.Response<String> res = mapper.readValue(
             response.body().asInputStream(),
-            com.jobs.board.listings.response.Response.class
+            (Class<com.jobs.board.listings.response.Response<String>>)(Class<?>) com.jobs.board.listings.response.Response.class
           );
           return new ErrorResponse(res.getBody(), res.getStatusCode());
         } catch (Exception exc) {
@@ -28,7 +28,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
           ObjectMapper mapper = new ObjectMapper();
           com.jobs.board.listings.response.Response<String> res = mapper.readValue(
             response.body().asInputStream(),
-            com.jobs.board.listings.response.Response.class
+            (Class<com.jobs.board.listings.response.Response<String>>)(Class<?>) com.jobs.board.listings.response.Response.class
           );
           return new ErrorResponse(res.getBody(), res.getStatusCode());
         } catch (Exception exc) {
@@ -39,7 +39,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
           ObjectMapper mapper = new ObjectMapper();
           com.jobs.board.listings.response.Response<?> res = mapper.readValue(
             response.body().asInputStream(),
-            com.jobs.board.listings.response.Response.class
+            (Class<com.jobs.board.listings.response.Response<?>>)(Class<?>) com.jobs.board.listings.response.Response.class
           );
           return new ErrorResponse("Error occured in client", res.getStatusCode());
         } catch (Exception exc) {

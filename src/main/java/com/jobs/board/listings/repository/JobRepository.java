@@ -15,4 +15,6 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
   public Long countByCreatedBy(UUID createdBy);
   public Optional<Page<Job>> findByType(JobType type, Pageable pageable);
   public Optional<Job> findByCreatedByAndId(UUID createdBy, UUID id);
+  public void deleteByIdAndCreatedBy(UUID id, UUID createdBy);
+  public void deleteByCreatedBy(UUID createdBy);
 }
